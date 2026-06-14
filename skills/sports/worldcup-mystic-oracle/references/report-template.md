@@ -99,9 +99,39 @@ After the scorecard, state:
 - Confidence gate applied.
 - Final confidence label.
 
+## 赛前市场映射
+
+Use `references/pre-match-market-mapping.md` and state:
+
+| 信号桶 | 判读 | 影响玩法 | 结论 |
+| --- | --- | --- | --- |
+| 胜负气 |  | 胜平负 |  |
+| 盘路气 |  | 让球胜平负 |  |
+| 门路开闭 |  | 总进球/双方进球叙事 |  |
+| 节奏先后 |  | 半全场 |  |
+| 细节成像 |  | 比分 |  |
+
+Then state:
+
+- Strong favorite expansion trigger: active, partial, or inactive.
+- Weak-side goal classifier: 偷一球, 追平球, 反超球, 垃圾时间球, or none.
+- Preferred markets: top 2 or 3 markets.
+- Conflict check result: pass or list rewritten items.
+
 ## 比分池
 
-Give three layers:
+Choose a score structure before exact scores:
+
+| 结构 | 是否采用 | 比分 |
+| --- | --- | --- |
+| 零封强胜 |  |  |
+| 强胜但丢球 |  |  |
+| 僵持小胜 |  |  |
+| 平局结构 |  |  |
+| 客胜反击 |  |  |
+| 混乱大球 |  |  |
+
+Then give three layers:
 
 - 主线比分: 1 to 2 picks.
 - 防守比分: 1 to 3 picks.
