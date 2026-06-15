@@ -50,6 +50,7 @@ Always separate verified facts from symbolic interpretation. Never claim a guara
 4. Read `references/kit-colour-query.md` before doing kit-colour or Five Elements analysis.
 5. Query coach and key-player birth dates:
    - Use the official lineup if available.
+   - Treat public coach/player profile birth dates as Gregorian dates unless the source explicitly says lunar. Do not convert them into lunar calendar months for month-pillar calculation; bazi month pillars must use solar terms.
    - Default to the key-person set: manager, goalkeeper, captain or defensive leader, primary striker, primary creator or central midfielder, and one likely impact substitute.
    - Collect more players only when official lineup or roster data is easy to source.
    - Mark missing or uncertain dates; do not substitute age-only data.
@@ -87,6 +88,7 @@ Always separate verified facts from symbolic interpretation. Never claim a guara
 - Separate prediction from betting strategy: a match lean is not automatically a recommended ticket.
 - Always include data phase, lineup status, birth-date coverage, confidence level, and reversal/no-play conditions.
 - Always include a role-based bazi table for coaches and key players when bazi is used: coach, goalkeeper, defensive leader/captain, creator or central midfielder, striker, and impact substitute or remaining key starter.
+- When bazi is used, disclose `input_calendar`, conversion basis, and month-pillar basis. Public profile dates should be labelled as Gregorian/public-date inputs.
 - Do not include astrology, biorhythm, aura reading, animal oracles, random omens, or broad feng shui unless the user explicitly asks for an extra entertainment appendix.
 - Do not invent birth dates, lineups, kit colours, Qi Men chart values, or bazi pillars. Mark unknown data as missing.
 - If only birth date is available, call the chart "缺时柱八字" or "三柱参考"; never infer an unknown birth hour.

@@ -76,6 +76,8 @@ Explain:
 Explain:
 
 - Birth-date sources.
+- Input calendar: public coach/player profile birth dates are treated as Gregorian dates unless the source explicitly says lunar.
+- Conversion basis: Gregorian date -> bazi/eight-character pillars; month pillar uses solar terms, not lunar calendar month.
 - Source status for each birth date: `verified`, `secondary`, or `missing`.
 - Which people have verified full dates.
 - Which people are missing and excluded.
@@ -92,6 +94,7 @@ Use a table:
 
 After the table, state:
 
+- Calendar audit: whether all computed rows used public Gregorian dates and whether any row is near a midnight or solar-term boundary that lowers confidence.
 - Team bazi coverage and scored coverage.
 - Coach edge.
 - Goalkeeper risk.

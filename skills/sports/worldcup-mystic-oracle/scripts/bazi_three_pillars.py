@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Compute incomplete bazi three pillars from sourced birth dates.
 
-This helper intentionally omits the hour pillar. It expects Gregorian dates in
-YYYY-MM-DD form and returns year, month, and day pillars only.
+This helper intentionally omits the hour pillar. Public coach/player profile
+birth dates are treated as Gregorian dates in YYYY-MM-DD form unless the source
+explicitly marks them as lunar dates. The Gregorian date is then converted by
+the bazi library into year, month, and day pillars.
 """
 
 from __future__ import annotations
@@ -119,17 +121,22 @@ def get_lunar_classes() -> Any:
     return Solar
 
 
-def pillars_for_date(date_text: str) -> dict[str, str]:
+def pillars_for_date(date_text: str) -> dict[str, Any]:
     if not DATE_RE.match(date_text):
         raise ValueError(f"Invalid date: {date_text}. Expected YYYY-MM-DD.")
     year, month, day = [int(part) for part in date_text.split("-")]
     Solar = get_lunar_classes()
     eight = Solar.fromYmdHms(year, month, day, 12, 0, 0).getLunar().getEightChar()
     return {
+        "input_calendar": "gregorian",
+        "input_calendar_note": "公开球员/教练生日默认按公历日期输入，除非来源明确标注农历",
+        "pillar_calculation_basis": "Solar.fromYmdHms(gregorian date, 12:00 placeholder) -> getLunar().getEightChar()",
+        "month_pillar_basis": "solar_terms",
         "year_pillar": eight.getYear(),
         "month_pillar": eight.getMonth(),
         "day_pillar": eight.getDay(),
         "hour_pillar": None,
+        "hour_placeholder": "12:00 is only a date-only placeholder; hour pillar is omitted and not scored",
         "note": "时柱缺失，因此只作三柱参考",
     }
 
@@ -183,9 +190,18 @@ def branch_relation(person_branch: str | None, match_branch: str | None) -> dict
     person_element = BRANCH_ELEMENTS.get(person_branch)
     match_element = BRANCH_ELEMENTS.get(match_branch)
     relation = element_relation(person_element, match_element)
-    relation["type"] = f"branch_{relation['type']}"
+    relation_type = relation["type"]
+    relation["type"] = f"branch_{relation_type}"
     relation["score"] = round(relation["score"] * 0.5, 3)
-    relation["text"] = f"日支五行关系：{relation['text']}"
+    branch_text = {
+        "same": "双方日支五行同气",
+        "match_generates_person": "比赛日支五行生扶此人日支",
+        "person_generates_match": "此人日支五行泄气生比赛日支",
+        "person_controls_match": "此人日支五行可制比赛日支",
+        "match_controls_person": "比赛日支五行克制此人日支",
+        "neutral": "日支五行关系中性",
+    }
+    relation["text"] = branch_text.get(relation_type, f"日支五行关系：{relation['text']}")
     return relation
 
 

@@ -161,11 +161,15 @@ Use kit Five Elements as an auxiliary input:
 
 For coaches and players, birth hour is usually unavailable. Use `缺时柱八字`:
 
+- Treat public football profile birth dates as Gregorian/public-calendar dates unless the source explicitly says the date is lunar.
+- Do not manually convert a Gregorian birthday into a lunar month and then derive the month pillar from that lunar month.
+- Correct sequence: public Gregorian date -> solar date object -> bazi/eight-character pillars, with month pillar calculated by solar terms.
 - Compute or query 年柱, 月柱, 日柱 only.
 - Do not infer 时柱.
 - Say clearly: `时柱缺失，因此只作三柱参考`.
 - Use solar terms for month-pillar calculation, not lunar calendar months.
 - Use a reliable bazi calculator or library for pillars and cite the source if the calculation is not performed locally.
+- Disclose the input calendar and calculation basis in the report. If birth time, birthplace, or timezone is unknown, mark boundary cases near midnight or solar-term transitions as lower confidence.
 
 When Python is available, use the helper script:
 
