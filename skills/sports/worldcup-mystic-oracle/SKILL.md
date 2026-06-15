@@ -54,7 +54,7 @@ Always separate verified facts from symbolic interpretation. Never claim a guara
    - Collect more players only when official lineup or roster data is easy to source.
    - Mark missing or uncertain dates; do not substitute age-only data.
    - Report birth-date coverage as a ratio for each team.
-6. Read `references/qimen-bazi-method.md` before producing the prediction.
+6. Read `references/qimen-bazi-method.md` before producing the prediction. For Qi Men, explicitly apply its high-order method: charting standard, four-plate hierarchy, separate 九星/八门旺衰, 主客攻防势, 门迫/门制, 十干克应, 空亡/入墓/击刑/马星, and confidence reduction for unresolved abnormal fields.
 7. Use helper scripts when useful:
    - `scripts/qimen_parse.py` to parse saved Qi Men calculator HTML into JSON. If parsing is incomplete, label the section `简化奇门象占`.
    - `scripts/bazi_three_pillars.py` to compute 年柱/月柱/日柱 from sourced birth dates. If the dependency is missing, install or use a reliable external calculator and cite it.
