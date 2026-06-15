@@ -149,21 +149,7 @@ Do not label a fixed score as a "胆" unless the final confidence is `high` and 
 
 ## 竞彩策略
 
-Use at least four profiles by default. When the user asks for detailed betting strategy, include all six styles:
-
-| 风格 | 风险 | 适用前提 | 主攻玩法 | 防守玩法 | 适合用户 |
-| --- | --- | --- | --- | --- | --- |
-| 保守防守型 |  |  |  |  |  |
-| 均衡主线型 |  |  |  |  |  |
-| 进取比分型 |  |  |  |  |  |
-| 半全场剧情型 |  |  |  |  |  |
-| 防冷对冲型 |  |  |  |  |  |
-| 纯观赛型 |  |  |  |  |  |
-
-Then provide a compact allocation table for each style:
-
-| 玩法 | 选择项 | 比例 | 100单位示例 | 命中逻辑 | 风险点 | 放弃条件 |
-| --- | --- | ---: | ---: | --- | --- | --- |
+Use exactly one primary strategy by default. Do not present several styles unless the user explicitly asks for alternatives. The primary strategy should prioritize estimated hit probability and simplicity over payout.
 
 If the user asks for a concrete budget, convert percentages into amounts. Otherwise use percentages and `100单位示例`.
 
@@ -187,6 +173,24 @@ If the report phase is `post-lock`, state that the tables are replay mappings on
 Separate this section from the prediction with a sentence like:
 
 `下面是把玄学剧本翻译成娱乐型体彩结构，不等于要求下注。`
+
+Then provide the primary strategy table:
+
+| 项目 | 内容 |
+| --- | --- |
+| 主推策略 | 不下注 / 单锚 / 双分支覆盖 / 三分支覆盖 |
+| 为什么它胜率最高 | oracle signal + official odds signal |
+| 玩法与选择 | official pool and selection |
+| 资金配置 | percentage and `100单位示例` |
+| 条件返还 | `stake × odds = return`, or `不可计算` |
+| 最大风险 | one concrete losing path |
+| 放弃条件 | concrete pre-kickoff trigger |
+
+After the table, add one line:
+
+`为什么不选其它玩法：...`
+
+Do not list six styles unless the user explicitly asks.
 
 ## 推翻本判的条件
 

@@ -1,6 +1,6 @@
-# Betting Strategy Styles
+# Betting Strategy
 
-These styles convert the Qi Men and incomplete-bazi "赛前玄学战报" into entertainment-only China Sports Lottery structures. Always include responsible-play language and avoid profit-certainty language.
+Convert the Qi Men and incomplete-bazi "赛前玄学战报" into one entertainment-only China Sports Lottery structure by default. The user should not have to choose between many styles unless they explicitly ask for alternatives.
 
 ## Bankroll Rules
 
@@ -8,18 +8,76 @@ These styles convert the Qi Men and incomplete-bazi "赛前玄学战报" into en
 - If no budget is given, use percentages plus a fictional `100单位示例`.
 - For a single match, suggest risking only a small portion of the user's entertainment bankroll.
 - Never suggest borrowing, chasing losses, martingale doubling, or all-in stakes.
-- Every style must include a "放弃条件".
+- The primary strategy must include a "放弃条件".
 - Separate prediction from betting. A match lean can become `no-play` when confidence gates are low.
-- If final confidence is `low`, default to `纯观赛型` and keep all other styles clearly theoretical.
-- If report phase is `post-lock`, do not present pre-match betting as actionable. Use the styles only as replay mapping.
+- If final confidence is `low`, the only primary strategy is `不下注 / 纯观赛`.
+- If report phase is `post-lock`, do not present pre-match betting as actionable. Use any table only as replay mapping.
 - Before any staking table, read `official-sporttery-odds.md` and fetch latest official Sporttery/中国体彩 odds and sale status for the exact fixture and play types. If official odds are unavailable, mark the table `理论模型` and do not use assumed odds for cost-recovery claims.
 - Use the official `HHAD` handicap line from the cache. Do not force `-1` allocations when Sporttery lists a different line; either remap to the official line or mark the `-1` branch theoretical.
 - Always show conditional arithmetic for any plan that claims cost control: `stake × odds = return`. Use `返还` or `回收`, not guaranteed `盈利`, unless subtracting total exposure.
 - Do not call a plan "保本" unless the shown return is at least total exposure under the stated winning condition.
 
+## Primary Strategy Selector
+
+Choose exactly one default strategy in this order. "胜率最大" means highest estimated hit probability among available official lottery branches, not highest payout or guaranteed return.
+
+1. **No-play primary**
+   - Use when confidence is `low`, official odds are unavailable, kickoff/lineup facts are stale, or the recommended market is not selling.
+   - Output: `主推策略：不下注 / 纯观赛`.
+2. **High-probability single anchor**
+   - Use when one result or handicap branch has strong oracle agreement and official odds are available.
+   - Allocate 80% to 100% to the single highest-probability branch.
+   - Use when the user explicitly says they do not want to think or choose.
+3. **Two-branch probability cover**
+   - Use when the main script is clear but one adjacent branch is live, such as favorite win by exactly one vs by two or more, or draw vs narrow win.
+   - Allocate 70% to the highest-probability branch and 30% to the adjacent protection branch.
+   - Only use two branches if the second branch materially increases hit probability and does not contradict the score script.
+4. **Three-branch hedge**
+   - Use only when the user gives a larger budget or uncertainty is meaningful but confidence is still at least `medium`.
+   - Allocate 60/25/15. Do not exceed three branches in the primary strategy.
+
+Selection rules:
+
+- Prefer `胜平负` when the odds branch itself is high-probability and the return is not the user's main goal.
+- Prefer `让球胜平负` when the result is clear but the winning margin is the real uncertainty.
+- Prefer `总进球` only when official odds are available and the Qi Men door/tempo signal is stronger than the result signal.
+- Avoid fixed score and half/full as the primary "胜率最大" strategy unless official lineup is available and the user asks for high variance.
+- If the official favorite win odds are extremely low, still choose it if the user's priority is hit probability, but explicitly say the return is poor.
+- If the main-result branch has lower hit probability than a handicap protection branch, choose the handicap branch.
+
+Primary output format:
+
+| 项目 | 内容 |
+| --- | --- |
+| 主推策略 | one of: 不下注 / 单锚 / 双分支覆盖 / 三分支覆盖 |
+| 为什么它胜率最高 | one concise reason from oracle + one from official odds |
+| 玩法与选择 | official pool and selection |
+| 资金配置 | percentages and `100单位示例` |
+| 条件返还 | use official odds; if unavailable write `不可计算` |
+| 最大风险 | the main way it loses |
+| 放弃条件 | concrete pre-kickoff trigger |
+
+Then add:
+
+- `为什么不选其它玩法`: one compact sentence, not a menu.
+- `责任边界`: one sentence saying this is entertainment-only and can lose all units.
+
+Optional helper:
+
+```bash
+python scripts/primary_bet_strategy.py \
+  --odds-cache data/sporttery_odds_cache.json \
+  --candidates HAD:负:1,HHAD:让平:0.8 \
+  --mode two --pretty --utf8
+```
+
+Use candidates selected by the oracle and market-mapping step. The helper ranks available official-odds branches by candidate weight and implied probability, then emits exactly one primary strategy.
+
 ## Anti-Consensus Barbell Upgrade
 
 Use this upgrade when a match has a clear favorite, but the market/commentary consensus is overly narrow, such as "强队小胜", "沉闷 1:0", or "大热艰难过关". The goal is not to chase long shots blindly; it is to keep the main bankroll on the highest-probability side while using small units to cover both tails that consensus tends to underprice.
+
+This is not the default when the user asks for the highest-probability single strategy. Use it only when the user asks for balance between hit probability and payout, or when the main favorite branch alone cannot express the oracle.
 
 Core principles:
 
@@ -63,9 +121,9 @@ Apply cautiously:
 - If supported high-goal or `胜其它` options are unavailable in the actual lottery terminal, replace them with total goals `5/6/7+` where available, or mark the tail branch as unavailable.
 - Never describe the model as "保本" without showing the arithmetic and the condition under which it only breaks even.
 
-## Required Style Output
+## Optional Multiple Styles
 
-When the user asks for detailed betting strategy, include all six styles:
+Only when the user explicitly asks for multiple styles, include up to six styles:
 
 | 风格 | Risk | Use When |
 | --- | --- | --- |

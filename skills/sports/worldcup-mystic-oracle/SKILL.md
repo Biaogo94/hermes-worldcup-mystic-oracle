@@ -61,6 +61,7 @@ Always separate verified facts from symbolic interpretation. Never claim a guara
    - `scripts/qimen_qfdk.js` to call qfdk/qimen and emit structured Qi Men JSON. This is preferred over HTML parsing.
    - `scripts/qimen_parse.py` to parse saved Qi Men calculator HTML into JSON only as a fallback. If parsing is incomplete, label the section `简化奇门象占`.
    - `scripts/bazi_three_pillars.py` to compute 年柱/月柱/日柱 and role-weighted bazi modifiers from sourced birth dates. Pass `--match-date` when the match local date is known. If the dependency is missing, install or use a reliable external calculator and cite it.
+   - `scripts/primary_bet_strategy.py` to format one high-probability primary strategy from official odds and oracle-selected candidate branches.
 8. Build the battle report with only these prediction modules:
    - 球衣五行入盘.
    - 奇门遁甲时家排盘.
@@ -72,12 +73,7 @@ Always separate verified facts from symbolic interpretation. Never claim a guara
    - Classify each signal into result, handicap, goal-channel, tempo, or image buckets.
    - Run the consensus-trap, favorite-expansion, weak-side-goal, and conflict checks.
    - Rank the top markets and explicitly reduce markets that contradict the chosen script.
-12. Convert the oracle into selectable strategy styles:
-   - 胜平负.
-   - 让球胜平负, especially -1 when requested.
-   - 固定比分.
-   - 总进球.
-   - 半全场胜平负.
+12. Convert the oracle into one primary betting strategy by default. The primary strategy must prioritize hit probability and cognitive simplicity over high payout. Use multiple styles only if the user explicitly asks for alternatives.
 13. Read `references/betting-strategies.md` before creating the staking table.
 14. Use `references/report-template.md` for the final answer structure.
 
@@ -94,15 +90,10 @@ Always separate verified facts from symbolic interpretation. Never claim a guara
 - Do not include astrology, biorhythm, aura reading, animal oracles, random omens, or broad feng shui unless the user explicitly asks for an extra entertainment appendix.
 - Do not invent birth dates, lineups, kit colours, Qi Men chart values, or bazi pillars. Mark unknown data as missing.
 - If only birth date is available, call the chart "缺时柱八字" or "三柱参考"; never infer an unknown birth hour.
-- Give at least four strategy profiles by default, and include all six when the user asks for detailed betting strategy:
-  - 保守防守型.
-  - 均衡主线型.
-  - 进取比分型.
-  - 半全场剧情型.
-  - 防冷对冲型.
-  - 纯观赛型.
-- Include a "放弃条件" for every betting profile.
-- Include percentage allocation and a `100单位示例` for every betting profile unless the user provides a specific bankroll.
+- Give exactly one primary strategy by default. Do not make the user choose.
+- Include the rejected alternatives only as a one-line "为什么不选" note when useful.
+- Include a "放弃条件" for the primary strategy.
+- Include percentage allocation and a `100单位示例` for the primary strategy unless the user provides a specific bankroll.
 - Include bankroll limits and responsible lottery language.
 - Avoid recommending martingale, borrowing money, chasing losses, or all-in stakes.
 
@@ -124,6 +115,12 @@ Use `scripts/bazi_three_pillars.py` with a match date to produce auditable role-
 
 ```bash
 python scripts/bazi_three_pillars.py --people people.json --match-date 2026-06-15 --pretty --utf8
+```
+
+Use `scripts/primary_bet_strategy.py` when the oracle has selected candidate betting branches and the user wants one primary strategy:
+
+```bash
+python scripts/primary_bet_strategy.py --odds-cache data/sporttery_odds_cache.json --candidates HAD:负:1 --mode single --pretty --utf8
 ```
 
 Use `scripts/bet_plan.py` when the user wants a neat stake table from a JSON plan. The script summarizes total exposure, pick counts, and per-pick stake. It does not validate whether a real lottery terminal supports a specific ticket combination.
