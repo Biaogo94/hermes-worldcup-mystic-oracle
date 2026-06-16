@@ -100,19 +100,24 @@ Use this only after `qimen-bazi-overlay.md` is read and the parsed chart can loc
 
 | Overlay Row | Range | Positive | Negative |
 | --- | ---: | --- | --- |
-| 人宫状态 | -1 to +1 | 年命/日主落旺宫, 吉门吉星扶身 | 空亡, 入墓, 受制, 凶门凶神压身 |
+| 年命宫状态 | -1 to +1 | 年命落旺宫, 吉门吉星扶身 | 空亡, 入墓, 受制, 凶门凶神压身 |
 | 事宫状态 | -1 to +1 | 角色用神得门星神支持 | 角色用神受克, 门迫, 击刑 |
-| 人事生克 | -2 to +2 | 事生人, 人克事, 比和 | 人生事, 事克人 |
+| 年命宫 vs 时干/事宫 | -2 to +2 | 事生人, 人克事, 比和 | 人生事, 事克人 |
+| 日主宫 vs 事宫 | -1 to +1 | secondary confirmation supports 年命 | contradicts 年命 or shows drain/pressure |
 | 角色专属用神 | -1 to +1 | coach/GK/striker/etc. symbol supports person | role symbol clashes or drains person |
-| 八字过滤 | -1 to +1 | 日主/日支与比赛日形成 support/combine | clash, harm, punishment, repeated忌象 |
+| 月令气候病药 | -0.5 to +0.5 | event palace answers obvious cold/heat/dry/damp need | event palace worsens obvious climate bias |
+| 八字日主/日支过滤 | -1 to +1 | 日主/日支与比赛日形成 support/combine | clash, harm, punishment, repeated忌象 |
 | 流年/比赛日共振 | -0.5 to +0.5 | low-weight positive resonance | low-weight negative resonance |
 
 Cap rules:
 
 - If birth hour is missing, overlay contribution cannot exceed `medium` confidence.
+- If birth hour is missing, 年命宫 relation is the primary score; 日主宫 cannot override 年命宫 by itself.
+- If only 年/月/日 pillars are known, 月令 may add at most `±0.5` as a climate/病药 hint.
 - If no full-bazi喜用神 is available, write `喜忌未完整判定` and do not use喜忌 as a decisive score.
 - If大运 is not computed from a cited full chart, do not claim macro luck quality.
 - If person/event palaces are unknown, overlay is qualitative and cannot alter betting strategy by itself.
+- If `时干` cannot be located, do not use the overlay for result-path or staking aggression.
 
 Market impact:
 

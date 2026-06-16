@@ -4,15 +4,35 @@ Use this file when combining Qi Men Dun Jia with coaches' and key players' incom
 
 Keep this module confidence-limited. Public football data usually lacks birth hour, birthplace, and current luck-cycle details, so use three-pillar bazi as a filter, not as a standalone fate judgement.
 
+## Missing-Hour Protocol
+
+When only 年/月/日 are known, change the analysis priority:
+
+1. **Qi Men first, bazi second.** Qi Men is the event field for the exact kickoff. Bazi only personalizes who can carry or suffer that field.
+2. **Raise 年命 weight.** `year_ming_stem` is the most stable person anchor. Prefer it over a speculative day-master旺衰 judgement.
+3. **Use Qi Men 时干 as the event "result" substitute.** The missing bazi hour pillar is not guessed. Instead, use the Qi Men hour stem/event palace to represent the matter's future tendency and final route.
+4. **Use 月令 to set climate, not final喜忌.** The birth month branch gives cold/heat/dry/damp bias and possible medicine hints, but not a definitive喜用神 without full four pillars.
+5. **Use Qi Men reverse calibration cautiously.** If the person's palace is severely empty, trapped, dead-door, or struck, infer current low-state for this event only. Do not turn that into a permanent natal judgement.
+
+Missing-hour priority order:
+
+```text
+Qi Men event chart -> 年命落宫 -> 时干/事宫 -> 年命与事宫生克
+-> 月令气候偏好 -> 日主/日支 filters -> low-weight流年共振
+```
+
+This replaces any attempt to force exact full-bazi喜忌 from three pillars.
+
 ## Anchor Selection
 
 For each key person, define person anchors:
 
 | Anchor | Source | Meaning | Use |
 | --- | --- | --- | --- |
-| 年命 | birth `year_ming_stem` | personal root qi carried into the event | preferred Qi Men personal marker |
-| 八字日主 | birth `day_master` | subjective will, ability, and personal capacity | deep bazi-person marker |
+| 年命 | birth `year_ming_stem` | personal root qi carried into the event | primary marker when hour is missing |
+| 八字日主 | birth `day_master` | subjective will, ability, and personal capacity | secondary marker; do not overrule年命 when旺衰 is uncertain |
 | 生日支 | birth `day_branch` | body/field contact point | clash, combination, harm, punishment against match day |
+| 月令气候 | birth `month_command_climate` | cold/heat/dry/damp tendency | rough病药 clue only |
 
 For the event, define event anchors:
 
@@ -55,12 +75,15 @@ Judge palace element relation:
 
 Use this as a direction filter, not an automatic result pick.
 
+When birth hour is missing, judge `年命宫 vs 时干/事宫` first. Use `日主宫 vs 事宫` only as a secondary confirmation or contradiction.
+
 ## Bazi Preference Filter
 
 Full喜用神 requires serious birth-time and season analysis. For this skill:
 
 - If exact birth time is missing, do not claim a definitive喜用神.
 - Use day-master relation, season/month pillar, and match-day relation as `provisional element tendency`.
+- Use `month_command_climate` from the bazi helper to describe `月令气候偏好`, such as winter cold needing fire as a possible medicine hint.
 - Say `喜忌未完整判定` unless the user supplies a reliable full bazi or you cite a reliable full-bazi calculator.
 
 Practical filter:
@@ -76,6 +99,7 @@ Practical filter:
 Allowed:
 
 - Compare match year pillar and match day pillar with the person's year/day pillars.
+- Compare current流年 with the person's year/month/day pillars for obvious 天克地冲 or repeated clash/harm.
 - Flag strong clashes, harms, punishments, combinations, or repeated elements.
 - Use as a low-weight macro filter.
 
@@ -84,6 +108,17 @@ Not allowed:
 - Claim precise大运 quality without full bazi and a cited calculator.
 - Say a player is in a certain ten-year luck cycle from birthday alone.
 
+## Qi Men Reverse Calibration
+
+Use reverse calibration only as event-state evidence:
+
+- If 年命宫 is empty, tombed, struck, under死门, or heavily controlled, mark the person as low-state for this match.
+- If 年命宫 receives 时干/事宫 support and has usable door/star/deity, mark the person as able to receive the event.
+- If the person's month-climate hint is answered by the event palace element, raise confidence slightly. Example: cold winter chart with event palace fire can be a medicine-like support.
+- If the event palace worsens the obvious month-climate problem, lower confidence slightly.
+
+Do not say this proves the person's permanent喜忌. Phrase it as `本场奇门反推：...`.
+
 ## Overlay Scoring
 
 Use this compact row for each scored person:
@@ -91,8 +126,10 @@ Use this compact row for each scored person:
 | Item | Range | Rule |
 | --- | ---: | --- |
 | 年命/日主落宫 | -1 to +1 | palace strength and person-event relation |
-| 事宫对人宫 | -2 to +2 | 事生人 / 人克事 / 比和 / 人生事 / 事克人 |
+| 年命宫 vs 事宫 | -2 to +2 | primary when hour is missing; 事生人 / 人克事 / 比和 / 人生事 / 事克人 |
+| 日主宫 vs 事宫 | -1 to +1 | secondary confirmation only |
 | 角色专属用神 | -1 to +1 | whether role symbol supports that person |
+| 月令气候病药 | -0.5 to +0.5 | rough climate medicine hint; not full喜忌 |
 | 八字日主/日支过滤 | -1 to +1 | day-master element and day-branch relation to match day |
 | 流年/比赛日共振 | -0.5 to +0.5 | low-weight only |
 | 数据置信 | multiplier | official 1.0, reputable-secondary 0.85, secondary 0.75, missing 0 |

@@ -56,7 +56,7 @@ Always separate verified facts from symbolic interpretation. Never claim a guara
    - Mark missing or uncertain dates; do not substitute age-only data.
    - Store or pass a `source_status` for every date. If `source_status` is missing, bazi may be computed but must not be used as a weighted betting modifier.
    - Report birth-date coverage as a ratio for each team.
-6. Read `references/qimen-engine.md`, `references/qimen-bazi-method.md`, `references/qimen-bazi-overlay.md`, and `references/qimen-scoring.md` before producing the prediction. For Qi Men, use qfdk/qimen as the preferred structured engine when available, then explicitly apply the high-order method: charting standard, four-plate hierarchy, separate 九星/八门旺衰, 主客攻防势, 门迫/门制, 十干克应, 空亡/入墓/击刑/马星, and confidence reduction for unresolved abnormal fields. After the standalone Qi Men and standalone bazi checks, run the overlay: locate person anchors (`year_ming_stem`, `day_master`) and event anchors (`时干`, role-specific symbols), judge person-palace vs event-palace relation, and cap confidence when the chart cannot locate anchors.
+6. Read `references/qimen-engine.md`, `references/qimen-bazi-method.md`, `references/qimen-bazi-overlay.md`, and `references/qimen-scoring.md` before producing the prediction. For Qi Men, use qfdk/qimen as the preferred structured engine when available, then explicitly apply the high-order method: charting standard, four-plate hierarchy, separate 九星/八门旺衰, 主客攻防势, 门迫/门制, 十干克应, 空亡/入墓/击刑/马星, and confidence reduction for unresolved abnormal fields. After the standalone Qi Men and standalone bazi checks, run the missing-hour overlay protocol: `奇门为主、年命优先、时干补果、月令定气候`. Locate person anchors (`year_ming_stem` primary, `day_master` secondary, `month_command_climate` as rough climate hint) and event anchors (`时干`, role-specific symbols), judge `年命宫 vs 时干/事宫` first, and cap confidence when the chart cannot locate anchors.
 7. Use helper scripts when useful:
    - `scripts/fetch_sporttery_odds.py` to fetch official Sporttery match-list odds into a local cache before betting-strategy arithmetic. Add `--include-history` when total-goals, exact-score, or half/full branches may be used.
    - `scripts/qimen_qfdk.js` to call qfdk/qimen and emit structured Qi Men JSON. This is preferred over HTML parsing.
@@ -100,7 +100,8 @@ Always separate verified facts from symbolic interpretation. Never claim a guara
 - Do not include astrology, biorhythm, aura reading, animal oracles, random omens, or broad feng shui unless the user explicitly asks for an extra entertainment appendix.
 - Do not invent birth dates, lineups, kit colours, Qi Men chart values, or bazi pillars. Mark unknown data as missing.
 - If only birth date is available, call the chart "缺时柱八字" or "三柱参考"; never infer an unknown birth hour.
-- When combining Qi Men and bazi, state whether 年命/日主落宫 and 事宫 are parsed. If not parsed, label the overlay `partial` and keep it qualitative.
+- When combining Qi Men and bazi, state whether 年命宫, 时干/事宫, and role-specific symbols are parsed. If not parsed, label the overlay `partial` and keep it qualitative.
+- For date-only public profiles, apply the missing-hour protocol: 年命 is the primary personal anchor, 日主 is only secondary, 月令 only gives气候/病药 tendency, and Qi Men 时干 substitutes for the missing hour-pillar result function.
 - Do not claim definitive喜用神 or大运 unless full four pillars and a cited reliable calculator are available. With date-only public profiles, write `喜忌未完整判定`.
 - Give exactly one primary strategy by default. Do not make the user choose.
 - Do not output `Optional Multiple Styles` content from `betting-strategies.md` unless the user explicitly asks for multiple strategies.

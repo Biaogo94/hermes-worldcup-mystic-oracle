@@ -223,14 +223,24 @@ Purpose:
 - Bazi = person-specific capacity and fit.
 - Overlay = whether this specific coach/player can carry this specific match script.
 
+Missing-hour rule:
+
+- When only 年/月/日 are known, use `奇门为主，八字为辅`.
+- Priority order: `Qi Men event chart -> 年命落宫 -> 时干/事宫 -> 年命与事宫生克 -> 月令气候偏好 -> 日主/日支 filters -> low-weight流年共振`.
+- `year_ming_stem` is the primary personal anchor. `day_master` is secondary because day-master旺衰 and喜忌 are uncertain without the hour pillar.
+- Qi Men `时干` is the event-result anchor and substitutes for the missing hour-pillar function. Do not guess a person's missing 时柱.
+- Birth `month_command_climate` gives cold/heat/dry/damp tendency and possible病药 hint only. It is not a final喜用神 judgement.
+- Qi Men reverse calibration may describe this person's current event-state, but not permanent natal quality.
+
 Required overlay checks:
 
 1. Define person anchors:
-   - `year_ming_stem`: 年命, personal root qi.
-   - `day_master`: 八字日主, subjective ability.
+   - `year_ming_stem`: 年命, personal root qi and primary anchor when hour is missing.
+   - `day_master`: 八字日主, subjective ability; secondary confirmation only when旺衰 is uncertain.
    - `day_branch`: body/field contact and clash/combine point.
+   - `month_command_climate`: 月令气候 and rough病药 tendency.
 2. Define event anchors:
-   - match `时干`, representing the match event;
+   - match `时干`, representing the match event, result path, and missing-hour substitute;
    - role-specific event symbol, such as coach `值符/天辅/天心`, goalkeeper `天蓬/天芮/玄武`, striker `生门/景门/九天`.
 3. Locate person and event anchors in the Qi Men palaces when the parsed chart permits.
 4. Judge palace relation:
@@ -242,16 +252,19 @@ Required overlay checks:
 5. Apply bazi filter:
    - Use `喜忌未完整判定` unless full four pillars and a reliable喜用神 calculation are available.
    - Without birth hour, do not claim exact大运 or definitive喜忌.
-   - Use match year/day relation only as a low-weight共振 filter.
+   - Use `month_command_climate` as a rough climate preference, not a decisive score.
+   - Use match year/day relation and current流年 against the person's year/month/day pillars only as low-weight共振 filters.
 
-If the chart cannot locate `year_ming_stem` or `day_master`, mark the overlay row as `partial` and keep it qualitative.
+If the chart cannot locate `year_ming_stem`, `时干`, or the role-specific symbol, mark the overlay row as `partial` and keep it qualitative. If only `day_master` is missing from palace lookup, keep the 年命 judgement but cap the row at `low-medium`.
 
 If coverage is below 4/6 for either team, cap the bazi module at `±0.5`. If coverage is below 3/6, describe bazi qualitatively and do not score it.
 
 Use these checks:
 
+- 年命落宫 and its relation to `时干/事宫`.
 - Day master element of each key person.
 - Relationship between person day master and match-day stem/branch.
+- Month-command climate and whether the event palace gives a medicine-like support or worsens the obvious cold/heat/dry/damp bias.
 - Clash, combination, harm, punishment, and break between birth day branch and match day branch.
 - Whether the person's dominant element is supported or controlled by the kit element and match-time Qi Men palace.
 - Whether the coach's chart supports the team's tactical element.
@@ -290,6 +303,7 @@ Use a compact scorecard. Score only from sourced or parsed data; mark missing pi
 | 球衣五行入盘 | -1 to +1 | -1 to +1 | auxiliary only |
 | 教练缺时柱八字 | -1 to +1 | -1 to +1 | modifier only |
 | 球员缺时柱八字 | -2 to +2 | -2 to +2 | modifier only; cap by coverage |
+| 奇门×八字叠盘 | -2 to +2 | -2 to +2 | 年命宫 vs 时干/事宫 is primary; 日主/月令 only filter |
 | 现实校验 | -2 to +2 | -2 to +2 | lineup, injuries, odds, tactical facts |
 
 Interpretation:

@@ -47,6 +47,21 @@ BRANCH_ELEMENTS = {
     "亥": "water",
 }
 
+BRANCH_SEASON_CLIMATE = {
+    "寅": {"season": "early_spring", "climate": "wood rising; residual cold", "likely_medicine_hint": "火土可作调候参考"},
+    "卯": {"season": "mid_spring", "climate": "wood flourishing", "likely_medicine_hint": "金土可作平衡参考"},
+    "辰": {"season": "late_spring", "climate": "damp earth with wood residue", "likely_medicine_hint": "火土金视全局参考"},
+    "巳": {"season": "early_summer", "climate": "fire rising", "likely_medicine_hint": "水金可作平衡参考"},
+    "午": {"season": "mid_summer", "climate": "fire flourishing and dry", "likely_medicine_hint": "水金湿土可作调候参考"},
+    "未": {"season": "late_summer", "climate": "dry earth with fire residue", "likely_medicine_hint": "水木可作平衡参考"},
+    "申": {"season": "early_autumn", "climate": "metal rising", "likely_medicine_hint": "火木可作平衡参考"},
+    "酉": {"season": "mid_autumn", "climate": "metal flourishing", "likely_medicine_hint": "火木水视全局参考"},
+    "戌": {"season": "late_autumn", "climate": "dry earth with metal residue", "likely_medicine_hint": "水木可作调候参考"},
+    "亥": {"season": "early_winter", "climate": "water rising and cold", "likely_medicine_hint": "火土可作调候参考"},
+    "子": {"season": "mid_winter", "climate": "water flourishing and cold", "likely_medicine_hint": "火土为优先调候参考"},
+    "丑": {"season": "late_winter", "climate": "cold damp earth", "likely_medicine_hint": "火木可作调候参考"},
+}
+
 GENERATES = {
     "wood": "fire",
     "fire": "earth",
@@ -142,6 +157,7 @@ def pillars_for_date(date_text: str) -> dict[str, Any]:
         "year_branch": year_pillar[1],
         "month_stem": month_pillar[0],
         "month_branch": month_pillar[1],
+        "month_command_climate": BRANCH_SEASON_CLIMATE.get(month_pillar[1]),
         "day_master": day_pillar[0],
         "day_branch": day_pillar[1],
         "hour_pillar": None,
@@ -267,7 +283,8 @@ def add_role_scores(rows: list[dict[str, Any]], match_pillars: dict[str, str] | 
                     "year_ming_stem": row.get("year_ming_stem"),
                     "bazi_day_master": day_stem,
                     "birth_day_branch": day_branch,
-                    "qimen_usage": "年命天干用于奇门个人根本磁场；八字日主用于个人主观能力；生日支用于与比赛日支合冲刑害过滤。",
+                    "month_command_climate": row.get("month_command_climate"),
+                    "qimen_usage": "缺时柱时，年命天干优先用于奇门个人根本磁场；八字日主用于个人主观能力但不独断旺衰；生日支用于与比赛日支合冲刑害过滤；月令只作气候偏好和病药提示。",
                 },
                 "match_day_pillar": match_day,
                 "match_day_stem": match_day_stem,
