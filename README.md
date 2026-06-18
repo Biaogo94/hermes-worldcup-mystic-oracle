@@ -79,7 +79,6 @@ python skills/worldcup-mystic-oracle/scripts/collect_match_bundle.py \
   --kickoff-local "2026-06-16T18:00:00-04:00" \
   --venue "Boston" \
   --people data/people.json \
-  --qimen-engine-dir ~/.qimen/qfdk-qimen \
   --include-history \
   --output-dir data/iraq-norway \
   --pretty \
@@ -115,15 +114,24 @@ Python：
 python -m pip install lunar-python
 ```
 
-奇门排盘推荐使用 `qfdk/qimen`：
+奇门排盘推荐使用 `Biaogo94/qimen` MCP：
 
 ```bash
-git clone https://github.com/qfdk/qimen.git ~/.qimen/qfdk-qimen
-cd ~/.qimen/qfdk-qimen
-npm install
+git clone https://github.com/Biaogo94/qimen.git ~/.codex/mcp/qimen
+cd ~/.codex/mcp/qimen
+npm ci
+npm test
 ```
 
-然后把路径传给 `qimen_qfdk.js` 或 `collect_match_bundle.py`。
+Codex MCP 配置示例：
+
+```toml
+[mcp_servers.qimen]
+command = "node"
+args = ['C:\Users\Administrator\.codex\mcp\qimen\mcp\server.mjs']
+```
+
+如果当前 Agent 没有直接暴露 MCP 工具，`collect_match_bundle.py` 会通过 `qimen_mcp_client.mjs` 调用上述 stdio server。
 
 ## 安全边界
 

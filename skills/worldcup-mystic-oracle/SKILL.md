@@ -46,17 +46,25 @@ python scripts/collect_match_bundle.py \
   --kickoff-local "2026-06-16T18:00:00-04:00" \
   --venue "Boston" \
   --people data/people.json \
-  --qimen-engine-dir ~/.qimen/qfdk-qimen \
   --include-history \
   --output-dir data/iraq-norway \
   --pretty --utf8
 ```
 
-5. Use qfdk/qimen when available; otherwise label the section `简化奇门象占` and lower confidence:
+5. Use the configured `qimen` MCP first. If MCP tools are available in the agent, call them directly:
+
+```text
+qimen_calculate(datetime="2026-06-16T18:00:00-04:00", location="Boston", purpose="综合")
+qimen_detect_geju(datetime="2026-06-16T18:00:00-04:00", location="Boston")
+```
+
+If direct MCP tools are not exposed, use the bundled stdio client against the local Biaogo94/qimen server:
 
 ```bash
-node scripts/qimen_qfdk.js --engine-dir ~/.qimen/qfdk-qimen --datetime 2026-06-16T18:00:00-04:00 --location "Boston" --pretty
+node scripts/qimen_mcp_client.mjs --datetime 2026-06-16T18:00:00-04:00 --location "Boston" --pretty
 ```
+
+Only fall back to `scripts/qimen_qfdk.js` or `简化奇门象占` when the MCP server is unavailable; lower confidence and disclose the fallback.
 
 6. For public coach/player birthdays, treat dates as Gregorian unless explicitly marked lunar. Never infer an unknown birth hour:
 
@@ -125,7 +133,7 @@ Read only what is needed:
 
 - `references/prematch-data-status.md`: phase, confidence gates, reversal conditions.
 - `references/official-sporttery-odds.md`: Sporttery endpoints and odds field mapping.
-- `references/qimen-engine.md`: qfdk/qimen usage and fallback.
+- `references/qimen-engine.md`: Biaogo94/qimen MCP usage and fallback.
 - `references/qimen-bazi-method.md`: detailed Qi Men + incomplete Bazi method.
 - `references/qimen-bazi-overlay.md`: person-event overlay.
 - `references/qimen-scoring.md`: Qi Men scoring and market mapping.

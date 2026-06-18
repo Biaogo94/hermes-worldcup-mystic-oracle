@@ -3,7 +3,7 @@
 
 This script intentionally does not browse the web for narrative facts. It
 collects deterministic local/API artifacts that CLI agents can reuse:
-Sporttery odds, optional qfdk Qi Men chart, and optional three-pillar bazi.
+Sporttery odds, optional Qi Men MCP chart, and optional three-pillar bazi.
 """
 
 from __future__ import annotations
@@ -73,7 +73,8 @@ def main() -> int:
     parser.add_argument("--kickoff-local", help="Venue-local kickoff datetime, e.g. 2026-06-16T18:00:00-04:00.")
     parser.add_argument("--venue", help="Venue/city text for metadata and qimen disclosure.")
     parser.add_argument("--people", help="people.json for bazi_three_pillars.py.")
-    parser.add_argument("--qimen-engine-dir", help="Local qfdk/qimen checkout.")
+    parser.add_argument("--qimen-mcp-server", help="Path to Biaogo94/qimen mcp/server.mjs. Defaults to QIMEN_MCP_SERVER or ~/.codex/mcp/qimen/mcp/server.mjs.")
+    parser.add_argument("--qimen-engine-dir", help="Legacy local qfdk/qimen checkout fallback.")
     parser.add_argument("--output-dir", default="data/oracle-bundle")
     parser.add_argument("--include-history", action="store_true", help="Fetch Sporttery fixed-bonus history.")
     parser.add_argument("--pretty", action="store_true")
@@ -104,7 +105,20 @@ def main() -> int:
     steps["sporttery"] = run_command(odds_command)
 
     qimen_path = output_dir / "qimen.json"
-    if args.kickoff_local and args.qimen_engine_dir:
+    if args.kickoff_local and args.qimen_mcp_server is not None:
+        qimen_command = [
+            "node",
+            str(SCRIPT_DIR / "qimen_mcp_client.mjs"),
+            "--datetime",
+            args.kickoff_local,
+            "--location",
+            args.venue or "",
+            "--server",
+            args.qimen_mcp_server,
+            "--pretty",
+        ]
+        steps["qimen"] = run_command(qimen_command, qimen_path)
+    elif args.kickoff_local and args.qimen_engine_dir:
         qimen_command = [
             "node",
             str(SCRIPT_DIR / "qimen_qfdk.js"),
@@ -117,10 +131,21 @@ def main() -> int:
             "--pretty",
         ]
         steps["qimen"] = run_command(qimen_command, qimen_path)
+    elif args.kickoff_local:
+        qimen_command = [
+            "node",
+            str(SCRIPT_DIR / "qimen_mcp_client.mjs"),
+            "--datetime",
+            args.kickoff_local,
+            "--location",
+            args.venue or "",
+            "--pretty",
+        ]
+        steps["qimen"] = run_command(qimen_command, qimen_path)
     else:
         steps["qimen"] = {
             "status": "skipped",
-            "reason": "Provide both --kickoff-local and --qimen-engine-dir to generate qimen.json.",
+            "reason": "Provide --kickoff-local to generate qimen.json via MCP, or --kickoff-local with --qimen-engine-dir for legacy fallback.",
             "stdout_path": str(qimen_path),
         }
 

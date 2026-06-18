@@ -1,61 +1,105 @@
 # Qi Men Engine
 
-Use this file before charting a match. The goal is to avoid hand-built or HTML-fragile charts when a structured engine is available.
+Use this file before charting a match. Prefer structured MCP output over hand-built charts or HTML parsing.
 
 ## Engine Priority
 
-1. **Primary: qfdk/qimen local engine**
-   - Source: `https://github.com/qfdk/qimen`
-   - Method stated by project: 茅山派奇门遁甲, 转盘排法.
-   - Provides: 地盘, 天盘, 八门, 九星, 八神, 暗干, 四柱, 局数, 旬首, 值符, 值使, 空亡, 马星, 格局/解断 fields.
-   - Best use: deterministic JSON for the football scoring model.
-2. **Secondary: another cited structured Qi Men library or official calculator**
-   - Use only when it exposes enough palace data to audit.
-3. **Fallback: saved calculator HTML parsed by `scripts/qimen_parse.py`**
-   - Label as lower confidence if palace mapping or special patterns are incomplete.
+1. **Primary: Biaogo94/qimen MCP**
+   - Source: `https://github.com/Biaogo94/qimen`
+   - Local default server: `~/.codex/mcp/qimen/mcp/server.mjs`
+   - Codex config name: `qimen`
+   - Method: 时家转盘, 拆补口径.
+   - Provides: 四柱, 局数, 天盘, 地盘, 八门, 九星, 八神, 暗干, 值符, 值使, 空亡, 驿马, 格局, 九宫解断.
+2. **Secondary: bundled MCP stdio client**
+   - Use when the agent does not expose MCP tools directly but the local server path exists.
+3. **Legacy fallback: `scripts/qimen_qfdk.js`**
+   - Use only when MCP is unavailable and a compatible qfdk checkout is available.
 4. **Last resort: 简化奇门象占**
-   - Use only when no chart source is available; do not claim exact palace placements.
+   - Use only when no structured chart source is available; do not claim exact palace placements.
 
-## qfdk/qimen Setup
+## Direct MCP Calls
 
-Do not silently vendor third-party code. Either point to an existing local checkout or clone it into a known engine directory:
+If the agent exposes MCP tools, call:
 
-```bash
-git clone https://github.com/qfdk/qimen.git ~/.qimen/qfdk-qimen
-cd ~/.qimen/qfdk-qimen
-npm install
+```text
+qimen_supported_rules()
+qimen_calculate(datetime="2026-06-16T18:00:00-04:00", location="Boston", purpose="综合")
+qimen_detect_geju(datetime="2026-06-16T18:00:00-04:00", location="Boston")
+qimen_explain_gong(datetime="2026-06-16T18:00:00-04:00", location="Boston", gong="9")
 ```
 
-Then run:
+Use `qimen_calculate` for full scoring. Use `qimen_detect_geju` for a compact fact card. Use `qimen_explain_gong` only for the home/away/key-person palaces that the analysis needs.
+
+## CLI Fallback Client
+
+If MCP tools are not directly available, call the stdio server through the bundled client:
 
 ```bash
-node scripts/qimen_qfdk.js --engine-dir ~/.qimen/qfdk-qimen --datetime 2026-06-14T12:00:00-05:00 --location "Houston" --pretty
+node scripts/qimen_mcp_client.mjs \
+  --datetime 2026-06-16T18:00:00-04:00 \
+  --location "Boston" \
+  --pretty
 ```
 
-Alternative:
+Explicit server path:
 
 ```bash
-export QIMEN_QFDK_PATH=~/.qimen/qfdk-qimen
-node scripts/qimen_qfdk.js --datetime 2026-06-14T12:00:00-05:00 --pretty
+node scripts/qimen_mcp_client.mjs \
+  --server ~/.codex/mcp/qimen/mcp/server.mjs \
+  --datetime 2026-06-16T18:00:00-04:00 \
+  --location "Boston" \
+  --tool qimen_detect_geju \
+  --pretty
 ```
 
-Always pass the venue-local kickoff wall time with a UTC offset when possible. The wrapper preserves the wall time for qfdk because qfdk reads JavaScript `Date` values in the Node process local timezone. The offset is kept for audit/disclosure, not used to convert the chart to Beijing time. If the input has no offset, state the timezone assumption.
+`collect_match_bundle.py` uses this MCP client automatically when `--kickoff-local` is provided. Pass `--qimen-mcp-server` only when the server lives outside the default path.
 
-If the user asks for true solar time, adjust the wall time before running the wrapper and disclose the longitude correction.
+## Setup
+
+Recommended local install:
+
+```bash
+git clone https://github.com/Biaogo94/qimen.git ~/.codex/mcp/qimen
+cd ~/.codex/mcp/qimen
+npm ci
+npm test
+```
+
+Codex MCP config:
+
+```toml
+[mcp_servers.qimen]
+command = "node"
+args = ['C:\Users\Administrator\.codex\mcp\qimen\mcp\server.mjs']
+```
+
+For other CLI agents, register the same stdio server path.
+
+## Time Rules
+
+Always pass venue-local kickoff time with an explicit UTC offset when possible. Example: `2026-06-16T18:00:00-04:00`.
+
+The current qimen engine states:
+
+- `location` is display-only and does not do true-solar-time conversion.
+- It supports 时家 only.
+- It does not support 日家, 月家, 年家, 置闰, or true solar time.
+
+If the user asks for true solar time, adjust the datetime externally before calling MCP and disclose the correction.
 
 ## Disclosure
 
-When qfdk/qimen is used, disclose:
+When MCP is used, disclose:
 
-- Engine and source URL.
-- Method: 茅山派 / 转盘 / 时家 unless changed.
+- Engine: `Biaogo94/qimen` MCP.
+- Method: 时家转盘 / 拆补.
 - Kickoff time and timezone used.
-- Whether true solar time was used. Default remains official local time unless the user asks for true-solar rigor.
-- License note if code is bundled: the repository README says MIT while `package.json` says ISC; both are permissive, but keep attribution.
+- True solar time: used or not used.
+- Limitations from `qimen_supported_rules`.
 
-## Boundaries
+## Scoring Handoff
 
-qfdk/qimen calculates the chart. It does not decide football markets. After getting JSON, read `qimen-scoring.md` and score:
+After getting JSON, read `qimen-scoring.md` and map:
 
 - 主队/客队 anchors.
 - Result qi.
@@ -64,4 +108,5 @@ qfdk/qimen calculates the chart. It does not decide football markets. After gett
 - Tempo qi.
 - Image/detail qi.
 
-If qfdk output lacks a special-pattern row needed by the scoring model, mark that row `unknown` and cap confidence instead of guessing.
+If MCP output lacks a field needed by the scoring model, mark that row `unknown` and cap confidence instead of guessing.
+
