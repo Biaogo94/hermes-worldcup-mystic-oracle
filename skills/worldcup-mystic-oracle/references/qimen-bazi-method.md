@@ -35,11 +35,12 @@ Preferred charting standard:
 - 转盘奇门 as the default football-match standard because it preserves continuous match-flow causality.
 - Use kickoff time at the venue.
 - Use the venue timezone.
-- Use official local kickoff time by default. Use true solar time only if the user asks for high-rigor divination; if used, state the longitude correction.
+- Audit true solar time before charting when venue longitude is known. Use true-solar `qimen_datetime` when it crosses a shichen boundary or risk is high/critical.
 - Determine 阴遁 or 阳遁 by solar term.
 - Use 拆补法 by default for modern football because it switches at the actual solar-term boundary and is practical for real-time events. If the calculator uses 置闰法 or 茅山法, state that source standard and do not mix standards inside one report.
 - Determine 局数 by the solar term and hour according to the charting source used.
 - State whether the chart is 转盘 or 飞盘. Do not combine转盘 and飞盘 symbols unless using飞盘 as a labelled secondary check for伏吟/反吟 or extreme stagnation/shock cases.
+- State 中宫寄宫口径 when the engine exposes it. Default expectation for 转盘 is `天禽/中五寄坤二`; if unknown, mark `寄宫口径未暴露` and avoid over-reading the centre.
 
 Do not fabricate a full chart from memory. Use a reliable Qi Men calculator, library, or reference table and cite the source. If no calculator is available, label the section `简化奇门象占`, list the inputs, and avoid claiming exact palace placements.
 
@@ -77,6 +78,52 @@ Priority rule:
 - 八神 can trigger volatility but should not overturn both star and door unless paired with 空亡、击刑、入墓、反吟, or real-world disruption.
 - Use 地盘 palace element and season/month strength as the environment that amplifies or limits all other symbols.
 
+## Required Qi Men Judgement Sequence
+
+Use this sequence after the chart is obtained. Do not jump straight to lucky/unlucky keywords:
+
+1. **Time and method audit**
+   - civil kickoff time, true solar time, shichen, whether shichen crosses;
+   - 阴遁/阳遁, 局数, 拆补/置闰/茅山, 转盘/飞盘, 中宫寄宫口径;
+   - if any of these are unknown, cap confidence before scoring.
+2. **Macro field first**
+   - identify 空亡/孤虚, 月令旺衰, 伏吟/反吟, 五不遇时 if the engine exposes it;
+   - these set the maximum possible confidence and tempo script.
+3. **值符/值使 command axis**
+   - 值符 = 天道/战略/coach-command ceiling;
+   - 值使 = 人道/执行/tactical channel;
+   - compare their palaces before judging individual team palaces.
+4. **Team and role anchors**
+   - official Sporttery home/away order;
+   - football posture 主势/客势;
+   - 日干/时干, opposing palace, role-specific symbols.
+5. **Palace chemistry**
+   - star-door-deity-stem inside each relevant palace;
+   - 门迫/门制, 十干克应, 三奇六仪, special geju, 击刑, 入墓, 空亡 fill/冲实, 马星.
+6. **Football market mapping**
+   - only after steps 1-5 convert to result qi, handicap qi, goal-channel qi, tempo qi, and score-image qi.
+
+If the report is fast mode, summarize this sequence in one compact paragraph instead of a long table.
+
+## 值符/值使 Axis
+
+Treat 值符 and 值使 as a mandatory match-level checkpoint:
+
+| Relation | Meaning | Football Mapping |
+| --- | --- | --- |
+| 符使同宫 | strategy and execution overlap | clear game plan; stronger first-choice tactical script |
+| 符生使 | strategy feeds execution | coach plan can be implemented; raise main-script confidence |
+| 使生符 | execution feeds strategy | players expend energy to keep plan alive; watch late fade |
+| 符使比和 | same element | stable rhythm and internal agreement |
+| 值符克值使 | strategy pressures execution | command exists but execution tense; prefer narrow result or cautious handicap |
+| 值使克值符 | execution rebels against strategy | tactical disorder; lower result confidence, raise chaos/totals risk |
+
+For football:
+
+- coach edge should not be scored only from `值符`; inspect whether 值使 can carry it.
+- handicap aggression needs 值符/值使 support plus team palace support.
+- half/full-time script uses 值使 more strongly than 值符 because it describes execution path.
+
 ## Energy Strength and Abnormal Fields
 
 Before scoring, evaluate each relevant palace with this checklist:
@@ -95,12 +142,17 @@ Before scoring, evaluate each relevant palace with this checklist:
    - 天盘干 = current surface action, motive, visible movement.
    - 地盘干 = underlying cause, legacy constraint, baseline condition.
    - Judge the stem relation only after palace strength; strong palace releases the克应, weak palace may reduce it to noise.
-5. Energy distortion fields:
+5. 三奇六仪 and special geju:
+   - 三奇乙/丙/丁: creative solution, authority/firepower, precise/hidden finishing. They matter most when connected to 值使门, 生门/开门/景门, or team anchor.
+   - 六仪戊/己/庚/辛/壬/癸: capital/body, plan/trap, pressure/blocker, error/change, movement/fog, net/delay.
+   - 青龙返首/飞鸟跌穴/三奇得使/玉女守门 are positive only if not damaged by 空亡、击刑、入墓、门迫, or severe season weakness.
+   - 五不遇时, if confirmed by the engine, is a match-level confidence suppressor: avoid aggressive staking even if some local palace symbols look good.
+6. Energy distortion fields:
    - 击刑: structural self-damage, cards, tactical breakdown, injury, or sudden collapse. Treat as a major negative unless clearly contained.
    - 入墓: hidden, frozen, delayed, or low-expression energy. For football, maps to sterile possession, slow substitutions, trapped striker, or unclear coach intent.
    - 空亡: not absolute absence; only surface information is visible. Check whether the palace is filled/冲实 by month/day, and inspect the opposite or转宫 palace before declaring failure.
    - 马星: movement, travel, transition, counterattack, late substitution, or timing trigger. Use for tempo and half/full-time script more than final result.
-6. 伏吟 / 反吟:
+7. 伏吟 / 反吟:
    - 伏吟: stagnation, repetition, low tempo,利主/守势; avoid aggressive handicap unless reality strongly disagrees.
    - 反吟: shock, fast reversal, transition chaos,利客/动势; prefer totals/tempo markets over narrow scores.
 

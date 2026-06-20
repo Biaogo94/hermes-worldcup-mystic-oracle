@@ -78,14 +78,18 @@ Explain:
 - Charting standard, source, and whether official local time or true solar time was used.
 - 起局方法: 拆补法 / 置闰法 / 茅山法 / source-specific unknown.
 - Chart type: 转盘 default, or labelled 飞盘 secondary check.
+- 阴遁/阳遁, 局数, and 中宫寄宫口径 if exposed.
 - Kickoff time used for the chart.
+- Time/method confidence gate: civil time, true solar time, shichen crossing, and whether method metadata is complete.
 - `体彩结算主客` and `奇门攻防主客` placement convention.
 - Parser status: `parsed`, `partial`, `failed`, or external/manual.
 - 主客落宫.
 - Four-plate judgement: 天盘九星, 地盘九宫, 人盘八门, 神盘八神.
+- 值符/值使 command axis: 同宫/相生/比和/相克/unknown, and what it means for coach plan vs on-field execution.
 - 旺衰 logic: 九星月令旺衰 and 八门落宫旺衰 separately; do not merge them.
-- 门迫/门制, 十干克应, 空亡, 入墓, 击刑, 马星, 伏吟/反吟 if present.
+- 门迫/门制, 十干克应, 三奇六仪/格局, 空亡, 入墓, 击刑, 马星, 伏吟/反吟, 五不遇时 if present.
 - 空亡 handling: state whether it is true/false空 by month/day fill or冲实, and whether opposite/转宫 palace changes the judgement.
+- 用神 matrix: result, execution, goal channel, defense, chaos, and blowout anchors.
 - 利主/利客 posture and how it maps to football tempo: control, press, counterattack, expansion, or stalemate.
 - Match-event reading.
 - If exact palace placement cannot be verified, title this section `简化奇门象占` and avoid exact palace claims.
@@ -159,11 +163,14 @@ Use:
 
 | Module | 主队 | 客队 | Notes |
 | --- | ---: | ---: | --- |
+| 时间/盘法置信闸门 |  |  | true solar audit, shichen, method, chart type |
+| 值符/值使指挥轴 |  |  | strategy vs execution; half/full and handicap cap |
 | 体彩结算主客落宫 |  |  | palace element, 生克, 空亡, 入墓 |
 | 奇门攻防主客势 |  |  | 利主/利客, 阳时/阴时, 伏吟/反吟 |
 | 九星天时旺衰 |  |  | month/season strength |
 | 八门执行状态 |  |  | door quality, 门迫/门制 |
 | 八神波动修正 |  |  | command, hidden danger, cards, chaos |
+| 三奇六仪/格局 |  |  | 三奇得使, 青龙返首, 飞鸟跌穴, 五不遇时, damaged吉格 |
 | 十干克应 / 异常场 |  |  | 克应, 击刑, 入墓, 空亡转宫, 马星 |
 | 球衣五行入盘 |  |  | auxiliary |
 | 教练缺时柱八字 |  |  |  |

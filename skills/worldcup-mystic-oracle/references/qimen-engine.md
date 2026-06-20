@@ -15,6 +15,7 @@ Use this file before charting a match. Prefer structured MCP output over hand-bu
    - Codex config name: `qimen`
    - Method: 时家转盘, 拆补口径.
    - Provides: 四柱, 局数, 天盘, 地盘, 八门, 九星, 八神, 暗干, 值符, 值使, 空亡, 驿马, 格局, 九宫解断.
+   - Treat method metadata as part of the prediction. Do not mix this chart with another engine's 置闰/茅山/飞盘 output inside one report.
 2. **Secondary: bundled MCP stdio client**
    - Use when the agent does not expose MCP tools directly but the local server path exists.
 3. **Legacy fallback: `scripts/qimen_qfdk.js`**
@@ -107,6 +108,7 @@ The current qimen engine states:
 - `location` is display-only and does not do true-solar-time conversion.
 - It supports 时家 only.
 - It does not support 日家, 月家, 年家, 置闰, or true solar time.
+- It should be treated as a 数理奇门 engine. Do not add 法术奇门 or ritual-action claims to match reports.
 
 If true-solar-time MCP is unavailable:
 
@@ -123,11 +125,15 @@ When MCP is used, disclose:
 - Kickoff time and timezone used.
 - True solar time: civil time, true solar time, civil shichen, solar shichen, boundary risk, and whether true solar time was used.
 - Limitations from `qimen_supported_rules`.
+- Whether key match-level fields were available: 值符, 值使, 空亡, 驿马, 格局, 九宫解断.
+- 中宫寄宫口径 if the engine exposes it; otherwise say `寄宫口径未暴露，不单独读取中宫`.
 
 ## Scoring Handoff
 
 After getting JSON, read `qimen-scoring.md` and map:
 
+- method/time confidence gate;
+- 值符/值使 command axis;
 - 主队/客队 anchors.
 - Result qi.
 - Handicap qi.

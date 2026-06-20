@@ -74,13 +74,15 @@ node scripts/qimen_mcp_client.mjs --datetime 2026-06-16T18:00:00-04:00 --locatio
 
 Only fall back to `scripts/qimen_qfdk.js` or `简化奇门象占` when the MCP server is unavailable; lower confidence and disclose the fallback.
 
-7. For public coach/player birthdays, treat dates as Gregorian unless explicitly marked lunar. Never infer an unknown birth hour:
+7. After Qi Men charting, apply the structured judgement sequence from `qimen-bazi-method.md` and `qimen-scoring.md`: time/method gate -> macro field -> 值符/值使 command axis -> team/role anchors -> palace chemistry -> market mapping. Do not convert symbols into bets before this sequence is complete.
+
+8. For public coach/player birthdays, treat dates as Gregorian unless explicitly marked lunar. Never infer an unknown birth hour:
 
 ```bash
 python scripts/bazi_three_pillars.py --people data/people.json --match-date 2026-06-16 --pretty --utf8
 ```
 
-8. Convert the oracle judgement into weighted score scenarios, then optimize official-odds staking. If the user asks for `收益最大化`, first add a bounded intuition overlay (`第一念/外应/盘象`) to the scenarios with `intuition_boost`; never let intuition overturn the fact/Qi Men/odds base by itself:
+9. Convert the oracle judgement into weighted score scenarios, then optimize official-odds staking. If the user asks for `收益最大化`, first add a bounded intuition overlay (`第一念/外应/盘象`) to the scenarios with `intuition_boost`; never let intuition overturn the fact/Qi Men/odds base by itself:
 
 ```json
 [
